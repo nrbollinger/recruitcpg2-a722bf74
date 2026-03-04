@@ -29,7 +29,7 @@ const Footer = () => {
     });
     setSubmitting(false);
     const hasError = error || (data && !data.success);
-    if (error) {
+    if (hasError) {
       toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
     } else {
       toast({ title: "Message sent!", description: "We'll get back to you soon." });
