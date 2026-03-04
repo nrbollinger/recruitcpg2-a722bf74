@@ -1,12 +1,46 @@
+import { useState } from "react";
 import { Linkedin, Instagram } from "lucide-react";
+import { z } from "zod";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
 
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100),
+  email: z.string().trim().email("Invalid email").max(255),
+  message: z.string().trim().min(1, "Message is required").max(1000),
+});
+
 const Footer = () => {
+  const { toast } = useToast();
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = contactSchema.safeParse(form);
+    if (!result.success) {
+      toast({ title: "Validation error", description: result.error.errors[0].message, variant: "destructive" });
+      return;
+    }
+    setSubmitting(true);
+    const { error } = await supabase.from("contact_submissions" as any).insert(result.data as any);
+    setSubmitting(false);
+    if (error) {
+      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
+    } else {
+      toast({ title: "Message sent!", description: "We'll get back to you soon." });
+      setForm({ name: "", email: "", message: "" });
+    }
+  };
+
+  const inputClass =
+    "w-full rounded-md border border-border/40 bg-white/5 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50 transition-colors";
+
   return (
     <footer style={{ background: "hsl(210 30% 6%)" }}>
-      {/* Main footer content */}
       <div className="mx-auto max-w-7xl px-8 py-16">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand column */}
           <div className="lg:col-span-1">
             <a href="#" className="inline-block mb-6">
@@ -34,9 +68,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {["Executive Search", "Talent Acquisition", "RPO Solutions", "Contract Staffing"].map((item) => (
                 <li key={item}>
-                  <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
-                  </a>
+                  <a href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{item}</a>
                 </li>
               ))}
             </ul>
@@ -48,9 +80,7 @@ const Footer = () => {
             <ul className="space-y-4">
               {["Food & Beverage", "Personal Care", "Household Products", "Health & Wellness"].map((item) => (
                 <li key={item}>
-                  <a href="#categories" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item}
-                  </a>
+                  <a href="#categories" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{item}</a>
                 </li>
               ))}
             </ul>
@@ -67,12 +97,45 @@ const Footer = () => {
                 { label: "Contact", href: "#" },
               ].map((item) => (
                 <li key={item.label}>
-                  <a href={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                    {item.label}
-                  </a>
+                  <a href={item.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{item.label}</a>
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Contact form column */}
+          <div>
+            <h4 className="text-sm font-semibold text-foreground mb-6">Get in Touch</h4>
+            <form onSubmit={handleSubmit} className="space-y-3">
+              <input
+                type="text"
+                placeholder="Your name"
+                value={form.name}
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                className={inputClass}
+              />
+              <input
+                type="email"
+                placeholder="Your email"
+                value={form.email}
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                className={inputClass}
+              />
+              <textarea
+                placeholder="Your message"
+                rows={3}
+                value={form.message}
+                onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                className={inputClass + " resize-none"}
+              />
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+              >
+                {submitting ? "Sending..." : "Send Message"}
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -84,12 +147,8 @@ const Footer = () => {
             © {new Date().getFullYear()} Recruit CPG. All rights reserved.
           </p>
           <div className="flex gap-8">
-            <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-              Terms of Service
-            </a>
+            <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</a>
+            <a href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>
