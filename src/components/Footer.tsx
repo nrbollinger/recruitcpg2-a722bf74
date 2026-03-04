@@ -4,6 +4,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.png";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
