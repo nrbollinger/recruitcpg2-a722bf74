@@ -24,8 +24,11 @@ const Footer = () => {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("contact_submissions" as any).insert(result.data as any);
+    const { data, error } = await supabase.functions.invoke("contact-form", {
+      body: result.data,
+    });
     setSubmitting(false);
+    const hasError = error || (data && !data.success);
     if (error) {
       toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
     } else {
