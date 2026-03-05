@@ -1,15 +1,72 @@
 import { useParams, Link } from "react-router-dom";
-import { blogPosts } from "@/data/blogPosts";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { blogPosts as staticPosts } from "@/data/blogPosts";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+interface PostData {
+  title: string;
+  category: string;
+  read_time: string;
+  date: string;
+  image: string;
+  content: string[];
+}
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const [post, setPost] = useState<PostData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!post) {
+  useEffect(() => {
+    const fetchPost = async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("title, category, read_time, date, image, content")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+
+      if (data) {
+        setPost(data);
+      } else {
+        // Fallback to static
+        const staticPost = staticPosts.find((p) => p.slug === slug);
+        if (staticPost) {
+          setPost({
+            title: staticPost.title,
+            category: staticPost.category,
+            read_time: staticPost.readTime,
+            date: staticPost.date,
+            image: staticPost.image,
+            content: staticPost.content,
+          });
+        } else {
+          setNotFound(true);
+        }
+      }
+      setLoading(false);
+    };
+    fetchPost();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="flex items-center justify-center py-40">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (notFound || !post) {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
@@ -47,7 +104,7 @@ const BlogPost = () => {
           >
             <div className="mb-6 flex items-center gap-3 text-xs text-muted-foreground">
               <span className="badge-tag rounded-full px-3 py-1">{post.category}</span>
-              <span>{post.readTime}</span>
+              <span>{post.read_time}</span>
               <span>•</span>
               <span>{post.date}</span>
             </div>
@@ -69,10 +126,7 @@ const BlogPost = () => {
               {post.content.map((block, i) => {
                 if (block.startsWith("## ")) {
                   return (
-                    <h2
-                      key={i}
-                      className="text-xl md:text-2xl font-bold text-foreground mt-10 mb-4"
-                    >
+                    <h2 key={i} className="text-xl md:text-2xl font-bold text-foreground mt-10 mb-4">
                       {block.replace("## ", "")}
                     </h2>
                   );
@@ -81,23 +135,18 @@ const BlogPost = () => {
                   const [boldPart, ...rest] = block.split(":**");
                   return (
                     <p key={i} className="text-base text-muted-foreground leading-relaxed">
-                      <strong className="text-foreground">
-                        {boldPart.replace(/\*\*/g, "")}:
-                      </strong>
+                      <strong className="text-foreground">{boldPart.replace(/\*\*/g, "")}:</strong>
                       {rest.join(":**")}
                     </p>
                   );
                 }
                 return (
-                  <p key={i} className="text-base text-muted-foreground leading-relaxed">
-                    {block}
-                  </p>
+                  <p key={i} className="text-base text-muted-foreground leading-relaxed">{block}</p>
                 );
               })}
             </div>
           </motion.div>
 
-          {/* Blog CTA */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
