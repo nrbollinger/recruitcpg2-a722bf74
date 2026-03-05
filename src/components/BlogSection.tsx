@@ -1,9 +1,50 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { blogPosts } from "@/data/blogPosts";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { blogPosts as staticPosts } from "@/data/blogPosts";
+
+interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  read_time: string;
+  image: string;
+}
 
 const BlogSection = () => {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("slug, title, excerpt, category, read_time, image")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(4);
+
+      if (error || !data || data.length === 0) {
+        // Fallback to static posts
+        setPosts(
+          staticPosts.map((p) => ({
+            slug: p.slug,
+            title: p.title,
+            excerpt: p.excerpt,
+            category: p.category,
+            read_time: p.readTime,
+            image: p.image,
+          }))
+        );
+      } else {
+        setPosts(data);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
     <section id="blog" className="py-24 lg:py-32" style={{ background: "hsl(210 28% 8%)" }}>
       <div className="mx-auto max-w-7xl px-8">
@@ -21,7 +62,7 @@ const BlogSection = () => {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {blogPosts.map((post, i) => (
+          {posts.map((post, i) => (
             <Link key={post.slug} to={`/blog/${post.slug}`}>
               <motion.article
                 initial={{ opacity: 0, y: 20 }}
@@ -41,7 +82,7 @@ const BlogSection = () => {
                 <div className="p-7">
                   <div className="mb-3 flex items-center gap-3 text-xs text-muted-foreground">
                     <span className="badge-tag rounded-full px-3 py-1">{post.category}</span>
-                    <span>{post.readTime}</span>
+                    <span>{post.read_time}</span>
                   </div>
                   <h3 className="mb-2 text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
                     {post.title}
