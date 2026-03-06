@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeft, Plus, Trash2, GripVertical } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const AdminPostEditor = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +26,7 @@ const AdminPostEditor = () => {
   const [readTime, setReadTime] = useState("");
   const [date, setDate] = useState("");
   const [image, setImage] = useState("");
-  const [content, setContent] = useState<string[]>([""]);
+  const [content, setContent] = useState("");
   const [published, setPublished] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -49,7 +50,7 @@ const AdminPostEditor = () => {
           setReadTime(data.read_time);
           setDate(data.date);
           setImage(data.image);
-          setContent(data.content?.length ? data.content : [""]);
+          setContent(data.content || "");
           setPublished(data.published);
           setLoading(false);
         });
@@ -65,17 +66,6 @@ const AdminPostEditor = () => {
   const handleTitleChange = (val: string) => {
     setTitle(val);
     if (!isEditing) setSlug(generateSlug(val));
-  };
-
-  const updateContentBlock = (index: number, value: string) => {
-    setContent((prev) => prev.map((b, i) => (i === index ? value : b)));
-  };
-
-  const addContentBlock = () => setContent((prev) => [...prev, ""]);
-
-  const removeContentBlock = (index: number) => {
-    if (content.length <= 1) return;
-    setContent((prev) => prev.filter((_, i) => i !== index));
   };
 
   const uploadImage = async (): Promise<string | null> => {
@@ -113,7 +103,7 @@ const AdminPostEditor = () => {
       read_time: readTime,
       date,
       image: imageUrl || "",
-      content: content.filter((b) => b.trim() !== ""),
+      content,
       published,
       author_id: user?.id,
     };
@@ -204,56 +194,17 @@ const AdminPostEditor = () => {
                 <img src={image} alt="Current" className="h-12 w-12 rounded object-cover" />
               )}
             </div>
-            {image && (
-              <Input
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="Or paste image URL"
-                className="mt-2"
-              />
-            )}
-            {!image && !imageFile && (
-              <Input
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="Or paste image URL"
-                className="mt-2"
-              />
-            )}
+            <Input
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              placeholder="Or paste image URL"
+              className="mt-2"
+            />
           </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <Label>Content Blocks</Label>
-              <Button type="button" variant="outline" size="sm" onClick={addContentBlock}>
-                <Plus className="mr-1 h-3 w-3" /> Add Block
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Start a block with <code className="rounded bg-muted px-1">## </code> to make it a heading.
-            </p>
-            {content.map((block, i) => (
-              <div key={i} className="flex items-start gap-2">
-                <GripVertical className="mt-3 h-4 w-4 text-muted-foreground/40 shrink-0" />
-                <Textarea
-                  value={block}
-                  onChange={(e) => updateContentBlock(i, e.target.value)}
-                  rows={3}
-                  className="flex-1"
-                  placeholder={i === 0 ? "Start writing..." : "Continue..."}
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => removeContentBlock(i)}
-                  disabled={content.length <= 1}
-                  className="mt-1 shrink-0"
-                >
-                  <Trash2 className="h-4 w-4 text-muted-foreground" />
-                </Button>
-              </div>
-            ))}
+          <div className="space-y-2">
+            <Label>Content</Label>
+            <RichTextEditor value={content} onChange={setContent} />
           </div>
 
           <div className="flex items-center justify-between border-t border-border pt-6">
