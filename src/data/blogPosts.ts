@@ -359,3 +359,8 @@ const rawPosts: RawBlogPost[] = [
     ],
   },
 ];
+
+export const blogPosts: BlogPost[] = rawPosts.map((p) => ({
+  ...p,
+  content: blocksToHtml(p.content),
+}));
