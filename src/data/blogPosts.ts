@@ -9,7 +9,22 @@ export interface BlogPost {
   content: string;
 }
 
-export const blogPosts: BlogPost[] = [
+// Helper to convert legacy content arrays to HTML
+function blocksToHtml(blocks: string[]): string {
+  return blocks
+    .map((block) => {
+      if (block.startsWith("## ")) return `<h2>${block.slice(3)}</h2>`;
+      return `<p>${block}</p>`;
+    })
+    .join("\n");
+}
+
+// Internal type for raw data
+interface RawBlogPost extends Omit<BlogPost, "content"> {
+  content: string[];
+}
+
+const rawPosts: RawBlogPost[] = [
   {
     slug: "hiring-vp-ops-co-man",
     category: "Role-Specific Hiring Guides",
