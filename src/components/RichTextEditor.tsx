@@ -68,7 +68,7 @@ const RichTextEditor = ({ value, onChange }: RichTextEditorProps) => {
 
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value, false);
+      editor.commands.setContent(value, false, { preserveWhitespace: "full" });
     }
   }, [value, editor]);
 
