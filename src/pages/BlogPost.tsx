@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { blogPosts as staticPosts } from "@/data/blogPosts";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import DOMPurify from "dompurify";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -13,7 +14,7 @@ interface PostData {
   read_time: string;
   date: string;
   image: string;
-  content: string[];
+  content: string;
 }
 
 const BlogPost = () => {
@@ -24,7 +25,7 @@ const BlogPost = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("blog_posts")
         .select("title, category, read_time, date, image, content")
         .eq("slug", slug)
@@ -34,7 +35,6 @@ const BlogPost = () => {
       if (data) {
         setPost(data);
       } else {
-        // Fallback to static
         const staticPost = staticPosts.find((p) => p.slug === slug);
         if (staticPost) {
           setPost({
@@ -85,6 +85,11 @@ const BlogPost = () => {
     );
   }
 
+  const sanitizedContent = DOMPurify.sanitize(post.content, {
+    ADD_TAGS: ["img"],
+    ADD_ATTR: ["src", "alt", "href", "target", "rel"],
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -122,29 +127,10 @@ const BlogPost = () => {
               />
             </div>
 
-            <div className="prose-custom space-y-6">
-              {post.content.map((block, i) => {
-                if (block.startsWith("## ")) {
-                  return (
-                    <h2 key={i} className="text-xl md:text-2xl font-bold text-foreground mt-10 mb-4">
-                      {block.replace("## ", "")}
-                    </h2>
-                  );
-                }
-                if (block.startsWith("**") && block.includes(":**")) {
-                  const [boldPart, ...rest] = block.split(":**");
-                  return (
-                    <p key={i} className="text-base text-muted-foreground leading-relaxed">
-                      <strong className="text-foreground">{boldPart.replace(/\*\*/g, "")}:</strong>
-                      {rest.join(":**")}
-                    </p>
-                  );
-                }
-                return (
-                  <p key={i} className="text-base text-muted-foreground leading-relaxed">{block}</p>
-                );
-              })}
-            </div>
+            <div
+              className="prose prose-sm md:prose-base max-w-none text-muted-foreground [&_h1]:text-2xl [&_h1]:md:text-3xl [&_h1]:font-extrabold [&_h1]:text-foreground [&_h1]:mt-10 [&_h1]:mb-4 [&_h2]:text-xl [&_h2]:md:text-2xl [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:text-lg [&_h3]:md:text-xl [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:text-base [&_p]:leading-relaxed [&_p]:mb-4 [&_strong]:text-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-4 [&_li]:mb-1 [&_blockquote]:border-l-4 [&_blockquote]:border-primary/30 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-6 [&_img]:rounded-xl [&_img]:my-6 [&_img]:max-w-full [&_a]:text-primary [&_a]:underline"
+              dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+            />
           </motion.div>
 
           <motion.div
