@@ -5,7 +5,7 @@ const features = [
   { label: "C-Suite & VP Roles", exec: true, talent: false, rpo: true },
   { label: "Mid-Level & Specialist Roles", exec: false, talent: true, rpo: true },
   { label: "Volume / Bulk Hiring", exec: false, talent: true, rpo: true },
-  { label: "Confidential Searches", exec: true, talent: false, rpo: true },
+  { label: "Confidential Searches", exec: true, talent: true, rpo: true },
   { label: "Dedicated Recruiting Team", exec: false, talent: false, rpo: true },
   { label: "Employer Branding Support", exec: false, talent: false, rpo: true },
   { label: "Full-Cycle Management", exec: false, talent: false, rpo: true },
