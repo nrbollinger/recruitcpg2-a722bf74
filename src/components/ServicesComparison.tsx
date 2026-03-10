@@ -23,7 +23,7 @@ const plans = [
     highlight: false,
   },
   {
-    name: "Talent Acquisition",
+    name: "Contingent Search",
     tagline: "For scaling teams",
     key: "talent" as const,
     highlight: false,

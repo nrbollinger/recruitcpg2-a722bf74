@@ -10,7 +10,7 @@ const services = [
   },
   {
     icon: Users,
-    title: "Talent Acquisition",
+    title: "Contingent Search",
     desc: "Scale your CPG workforce with quality hires at every level. From marketing managers to production supervisors, we deliver pre-vetted candidates.",
     bullets: ["Volume Hiring", "Specialized Roles", "Quick Turnaround"],
   },
