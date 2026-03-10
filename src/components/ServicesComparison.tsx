@@ -14,6 +14,9 @@ const features = [
   { label: "Cost Optimization", exec: false, talent: false, rpo: true },
   { label: "Onboarding Assistance", exec: false, talent: false, rpo: true },
   { label: "Executive Recruitment Marketing Packet", exec: true, talent: false, rpo: false },
+  { label: "Pay Only on Placement", exec: false, talent: true, rpo: false },
+  { label: "Monthly Service Fee", exec: false, talent: false, rpo: true },
+  { label: "Retained Search", exec: true, talent: false, rpo: false },
 ];
 
 const plans = [
