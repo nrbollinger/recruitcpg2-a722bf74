@@ -13,6 +13,7 @@ const features = [
   { label: "Quick Turnaround", exec: false, talent: true, rpo: true },
   { label: "Cost Optimization", exec: false, talent: false, rpo: true },
   { label: "Onboarding Assistance", exec: false, talent: false, rpo: true },
+  { label: "Executive Recruitment Marketing Packet", exec: true, talent: false, rpo: false },
 ];
 
 const plans = [
