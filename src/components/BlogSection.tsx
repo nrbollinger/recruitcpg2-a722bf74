@@ -98,13 +98,13 @@ const BlogSection = () => {
         </div>
 
         <div className="mt-12 text-center">
-          <a
-            href="#"
+          <Link
+            to="/blog"
             className="inline-flex items-center gap-2 rounded-xl border border-border/60 px-7 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-primary"
           >
             View All Articles
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

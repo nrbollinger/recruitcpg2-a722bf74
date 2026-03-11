@@ -162,10 +162,10 @@ const BlogPost = () => {
 
           <div className="mt-10 pt-8 border-t border-border/40">
             <Link
-              to="/#blog"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-            >
-              <ArrowLeft className="h-4 w-4" /> Back to All Articles
+            to="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to All Articles
             </Link>
           </div>
         </div>
