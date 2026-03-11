@@ -74,7 +74,7 @@ const BlogPost = () => {
           <h1 className="text-3xl font-bold text-foreground mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist.</p>
           <Link
-            to="/#blog"
+            to="/blog"
             className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Blog
@@ -96,7 +96,7 @@ const BlogPost = () => {
       <article className="pt-32 pb-24">
         <div className="mx-auto max-w-3xl px-6">
           <Link
-            to="/#blog"
+            to="/blog"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-10"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Blog
@@ -162,10 +162,10 @@ const BlogPost = () => {
 
           <div className="mt-10 pt-8 border-t border-border/40">
             <Link
-              to="/#blog"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-            >
-              <ArrowLeft className="h-4 w-4" /> Back to All Articles
+            to="/blog"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to All Articles
             </Link>
           </div>
         </div>
