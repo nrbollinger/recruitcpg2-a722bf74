@@ -8,7 +8,7 @@ const navLinks = [
   { label: "Services", href: "#services", hasDropdown: true },
   { label: "Industries", href: "#categories", hasDropdown: true },
   { label: "About", href: "#about" },
-  { label: "Blog", href: "#blog" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const Navbar = () => {
