@@ -16,7 +16,7 @@ const HeroSection = () => {
       background: "linear-gradient(180deg, hsl(210 25% 11%) 0%, hsl(210 30% 7%) 60%, hsl(200 35% 5%) 100%)"
     }}>
       {/* Extra top space to match original */}
-      <div className="pt-32 lg:pt-44" />
+      <div className="pt-44 lg:pt-44" />
 
       <div className="mx-auto max-w-7xl px-8 pb-24">
         <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_1fr]">
