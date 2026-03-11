@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown, Linkedin, Instagram } from "lucide-react";
 import logo from "@/assets/logo.png";
 
@@ -7,7 +8,7 @@ const navLinks = [
   { label: "Services", href: "#services", hasDropdown: true },
   { label: "Industries", href: "#categories", hasDropdown: true },
   { label: "About", href: "#about" },
-  { label: "Blog", href: "#blog" },
+  { label: "Blog", href: "/blog" },
 ];
 
 const Navbar = () => {
@@ -23,16 +24,26 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <div className="hidden items-center gap-10 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-              {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+                {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
+              </a>
+            )
+          )}
         </div>
 
         {/* Social icons (desktop) */}
@@ -60,16 +71,27 @@ const Navbar = () => {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="border-t border-border bg-background px-8 py-4 md:hidden">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="block py-3 text-sm text-muted-foreground hover:text-foreground"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="block py-3 text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="block py-3 text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
       )}
     </nav>
