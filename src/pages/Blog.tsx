@@ -52,7 +52,7 @@ const Blog = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <section className="pt-32 pb-24">
+      <section className="pt-44 pb-24">
         <div className="mx-auto max-w-7xl px-8">
           <div className="mb-14 text-center">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
