@@ -52,7 +52,7 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
               About Recruit CPG
             </p>
             <h2 className="mb-6 text-3xl font-extrabold text-foreground md:text-4xl lg:text-[2.6rem] lg:leading-[1.15]">

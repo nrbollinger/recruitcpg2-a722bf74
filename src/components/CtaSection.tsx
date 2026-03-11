@@ -18,7 +18,7 @@ const CtaSection = () => {
         >
           {/* Decorative glow */}
           <div className="absolute -top-24 left-1/2 h-48 w-96 -translate-x-1/2 rounded-full opacity-30 blur-3xl" style={{ background: "hsl(160 50% 42% / 0.3)" }} />
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Get Started Today
           </p>
           <h2 className="mb-6 text-3xl font-extrabold text-foreground md:text-4xl lg:text-[2.6rem]">
