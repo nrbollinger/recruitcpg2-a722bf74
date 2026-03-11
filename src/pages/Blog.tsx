@@ -55,7 +55,7 @@ const Blog = () => {
       <section className="pt-44 pb-24">
         <div className="mx-auto max-w-7xl px-8">
           <div className="mb-14 text-center">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
               Our Blog
             </p>
             <h1 className="text-3xl font-extrabold text-foreground md:text-4xl lg:text-5xl">

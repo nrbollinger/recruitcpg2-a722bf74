@@ -54,7 +54,7 @@ const ServicesComparison = () => {
           transition={{ duration: 0.5 }}
           className="mb-14 text-center"
         >
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
             Compare Services
           </p>
           <h2 className="text-3xl font-extrabold text-foreground md:text-4xl">

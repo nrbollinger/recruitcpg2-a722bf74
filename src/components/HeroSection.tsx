@@ -26,7 +26,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+            <p className="mb-5 text-sm font-semibold uppercase tracking-[0.2em] text-primary">
               Consumer Packaged Goods Recruitment
             </p>
             <h1 className="mb-6 text-5xl font-extrabold leading-[1.08] tracking-tight text-foreground md:text-6xl lg:text-[4.2rem]" style={{ fontStyle: "italic" }}>
