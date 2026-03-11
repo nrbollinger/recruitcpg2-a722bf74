@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X, ChevronDown, Linkedin, Instagram } from "lucide-react";
 import logo from "@/assets/logo.png";
 
