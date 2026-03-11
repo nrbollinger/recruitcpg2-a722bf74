@@ -71,16 +71,27 @@ const Navbar = () => {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="border-t border-border bg-background px-8 py-4 md:hidden">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="block py-3 text-sm text-muted-foreground hover:text-foreground"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("/") ? (
+              <Link
+                key={link.label}
+                to={link.href}
+                className="block py-3 text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="block py-3 text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </div>
       )}
     </nav>
