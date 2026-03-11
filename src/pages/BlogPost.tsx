@@ -74,7 +74,7 @@ const BlogPost = () => {
           <h1 className="text-3xl font-bold text-foreground mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist.</p>
           <Link
-            to="/#blog"
+            to="/blog"
             className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
           >
             <ArrowLeft className="h-4 w-4" /> Back to Blog
